@@ -170,28 +170,22 @@ var BEMCLinter = postcss(function(css, opts) {
   var cssNodes = css.childs;
   var rules = cssNodes.filter(isRule);
   var bemcSelectors = _.flatten(rules.map(bemcify), true);
-  var blocks = cssNodes.filter(isBlock).map(function(css) {
-    return css.selector.replace(".", "").trim();
-  });
-  var contexts = cssNodes.filter(isContext).map(function(css) {
-    return css.selector.replace(".", "").trim();
-  });
 
-  var modifiers = _.uniq(_.flatten(bemcSelectors.map(function(bemcSelector) {
-    return bemcSelector.steps.map(function(bemcStep) {
-      return bemcStep.bemc.filter(function(bemc) {
-        return bemc.type == "modifier";
-      }).map(function(bemc) {
-        return bemc.full;
+  manifest = {};
+
+  ["block", "context", "modifier"].forEach(function(type) {
+    var ofType = _.uniq(_.flatten(bemcSelectors.map(function(bemcSelector) {
+      return bemcSelector.steps.map(function(bemcStep) {
+        return bemcStep.bemc.filter(function(bemc) {
+          return bemc.type == type;
+        }).map(function(bemc) {
+          return bemc.full;
+        });
       });
-    });
-  })));
+    })));
 
-  var manifest = {
-    blocks: blocks,
-    contexts: contexts,
-    modifiers: modifiers
-  };
+    manifest[type + "s"] = ofType
+  });
 
   bemcSelectors.forEach(function(bemcSelector) {
     validate(bemcSelector, manifest);

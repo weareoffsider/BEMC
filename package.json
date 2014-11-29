@@ -1,6 +1,6 @@
 {
   "name": "bemc-linter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Block Element Modifier Context Linting for PostCSS",
   "main": "index.js",
   "scripts": {

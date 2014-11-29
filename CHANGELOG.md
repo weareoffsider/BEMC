@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased Changes
 
+## 0.0.2 - 2014-11-29
+### Fixed
+- altered collection mechanism for blocks and contexts
+
 ## 0.0.1 - 2014-11-29
 ### Added
 - initial release with basic rule support
