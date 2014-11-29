@@ -1,0 +1,40 @@
+.block { }
+.block__elem { }
+.block--modifier { }
+
+.block .block__elem { } /* Unnecessary Specifity */
+.block.block--modifier { } /* Unnecessary Specifity */
+
+.block--modifier .block__elem { }
+
+.context\* {} /* Is Context */
+.context\*--modifier {} /* Is Context Modifier */
+.context\*.context\*--modifier {} /* Is Context Modifier */
+
+.context-not-exist\*--modifier {} /* Modifier for a context that doesn't exist */
+
+.has-some-non-existant-block {}
+
+.block.is-another-state,
+.block.is-state { }
+.block__elem.is-state { } /* Elements may not have state classes */
+
+
+.block-not-exist__elem { } /* Element for a block that doesn't exist */
+.block-not-exist--modifier { } /* Element for a block that doesn't exist */
+
+p.paragraph-block {} /* HTML Tag not to be used unless without a class or inside a context. */
+
+p .paragraph-block {} /* HTML Tag not to be used unless without a class or inside a context. */
+
+p {}
+
+.context\* p {}
+
+p.context\* {}
+
+
+.context\* .block__elem {}
+
+.context\* .block__elem p {}
+.context\* .block--modifier {}

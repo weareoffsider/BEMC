@@ -1,0 +1,32 @@
+{
+  "name": "bemc-linter",
+  "version": "0.0.1",
+  "description": "Block Element Modifier Context Linting for PostCSS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Offsider",
+  "license": "MIT",
+  "homepage": "https://github.com/weareoffsider/BEMC",
+  "keywords": [
+    "css",
+    "postcss",
+    "linting"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weareoffsider/BEMC.git"
+  },
+  "bugs": {
+    "url": "https://github.com/weareoffsider/BEMC/issues"
+  },
+  "devDependencies": {
+    "gulp-postcss": "^3.0.0",
+    "gulp": "~3.8.10"
+  },
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "postcss": "^3.0.5"
+  }
+}
