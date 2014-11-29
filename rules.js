@@ -13,9 +13,16 @@ module.exports.htmlTags = function(bemc, manifest) {
   var htmlIx = _.findIndex(bemc.steps, bemcStepHasHTMLTag);
   var contextIx = _.findIndex(bemc.steps, bemcStepIsContext);
 
+  htmlSteps = bemc.steps.filter(function(bemc) {
+    return !!bemc.htmlTag;
+  });
+
+  classedSteps = bemc.steps.filter(function(bemc) {
+    return bemc.bemc.length > 0;
+  });
+
   if (
-    htmlIx == 0 && (bemc.steps[0].bemc.length > 0 ||
-                    bemc.steps.length > 1)
+    htmlIx == 0 && (classedSteps.length > 0)
   ) {
     throw new Error(
       "HTML Tag may not be used in combination with classes unless inside a context"
@@ -86,17 +93,20 @@ module.exports.unnecessarySpecifity = function(bemc, manifest) {
   };
 
   var hadBlock = false;
+  var hadState = false;
 
   bemc.steps.forEach(function(bemcStep) {
     var types = getTypesFromStep(bemcStep);
     var hasBlock = _.contains(types, "block");
+    var hasState = _.contains(types, "state");
     hadBlock = hadBlock || hasBlock;
+    hadState = hadState || hasState
     var hasModifier = _.contains(types, "modifier");
     var hasElement = _.contains(types, "element");
     var hasContext = _.contains(types, "context");
     var hasContextModifier = _.contains(types, "context-modifier");
 
-    if (hadBlock && hasElement) {
+    if (hadBlock && hasElement && !hadState) {
       specificityError("Elements do not require blocks in their selector");
     }
 
@@ -129,3 +139,5 @@ module.exports.stateRules = function(bemc, manifest) {
     }
   });
 };
+
+

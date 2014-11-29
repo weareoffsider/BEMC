@@ -40,6 +40,8 @@ var getClassType = function(className) {
     return "element";
   } else if (className.split("--").length == 2) {
     return "modifier";
+  } else if (className.split(":").length == 2) {
+    return "pseudo-modifier";
   } else {
     return "block";
   }
@@ -98,6 +100,16 @@ var identifyClass = function(className) {
         type: type,
         full: className,
         modifier: split[1],
+        block: split[0]
+      };
+      break;
+
+    case "pseudo-modifier":
+      var split = className.split(":");
+      return {
+        type: type,
+        full: className,
+        pseudo: split[1],
         block: split[0]
       };
       break;

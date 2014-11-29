@@ -19,6 +19,8 @@
 .block.is-state { }
 .block__elem.is-state { } /* Elements may not have state classes */
 
+.block.is-state .block__elem { }
+.block:hover .block__elem { }
 
 .block-not-exist__elem { } /* Element for a block that doesn't exist */
 .block-not-exist--modifier { } /* Element for a block that doesn't exist */
@@ -33,6 +35,10 @@ p {}
 
 p.context\* {}
 
+
+html input[type=text] {}
+
+tbody th tr {}
 
 .context\* .block__elem {}
 
