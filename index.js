@@ -176,12 +176,34 @@ var validate = function(bemc, manifest) {
 
 }
 
+var bemcOn = true;
+
+var walkTree = function(css, lintNodes) {
+  css.childs.forEach(function (cssChild) {
+    if (isRule(cssChild) && bemcOn) {
+      lintNodes.push(cssChild);
+    };
+
+    if (cssChild.type == "atrule") {
+      walkTree(cssChild, lintNodes);
+    }
+
+    if (cssChild.type == "comment") {
+      if (cssChild.text.trim() == "bemc: off") {
+        bemcOn = false;
+      } else if (cssChild.text.trim() == "bemc: on") {
+        bemcOn = true;
+      }
+    }
+  });
+}
 
 
 var BEMCLinter = postcss(function(css, opts) {
-  var cssNodes = css.childs;
-  var rules = cssNodes.filter(isRule);
-  var bemcSelectors = _.flatten(rules.map(bemcify), true);
+  var lintNodes = [];
+  walkTree(css, lintNodes);
+
+  var bemcSelectors = _.flatten(lintNodes.map(bemcify), true);
 
   manifest = {};
 

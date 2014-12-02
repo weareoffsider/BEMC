@@ -35,6 +35,18 @@ p {}
 
 p.context\* {}
 
+@media screen {
+  p.content\* { /* not allowed */
+
+  }
+
+}
+
+/* bemc: off */
+clearly incorrect .eoanth {}
+/* bemc: on */
+
+
 
 html input[type=text] {}
 
