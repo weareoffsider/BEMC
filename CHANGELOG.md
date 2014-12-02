@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased Changes
 
+## 0.0.5 - 2014-12-03
+### Fixed
+- Null check added for blank atrules.
+
 ## 0.0.4 - 2014-12-03
 ### Added
 - Linter now walks into media queries (was passing over them)

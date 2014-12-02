@@ -179,6 +179,7 @@ var validate = function(bemc, manifest) {
 var bemcOn = true;
 
 var walkTree = function(css, lintNodes) {
+  if (!css.childs) return;
   css.childs.forEach(function (cssChild) {
     if (isRule(cssChild) && bemcOn) {
       lintNodes.push(cssChild);
