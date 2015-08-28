@@ -8,7 +8,6 @@ var bemcStepIsContext = function(step) {
   return !step.htmlTag && step.bemc[0] && step.bemc[0].type == "context"
 }
 
-
 module.exports.htmlTags = function(bemc, manifest) {
   var htmlIx = _.findIndex(bemc.steps, bemcStepHasHTMLTag);
   var contextIx = _.findIndex(bemc.steps, bemcStepIsContext);
@@ -29,7 +28,7 @@ module.exports.htmlTags = function(bemc, manifest) {
     );
   }
 
-  if (htmlIx > 1 && (htmlIx < contextIx || contextIx == -1)) {
+  if (htmlIx > 0 && (htmlIx < contextIx || contextIx == -1)) {
     throw new Error(
       "HTML Tag not to be used unless without a class or inside a context"
     );

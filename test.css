@@ -1,6 +1,9 @@
 .block { }
 .block__elem { }
 .block--modifier { }
+.Block { }
+.Block__elem { }
+.Block--modifier { }
 
 .block .block__elem { } /* Unnecessary Specifity */
 .block.block--modifier { } /* Unnecessary Specifity */
@@ -18,6 +21,7 @@
 .block.is-another-state,
 .block.is-state { }
 .block__elem.is-state { } /* Elements may not have state classes */
+.block__elem\* {}
 
 .block.is-state .block__elem { }
 .block:hover .block__elem { }
@@ -25,6 +29,7 @@
 .block-not-exist__elem { } /* Element for a block that doesn't exist */
 .block-not-exist--modifier { } /* Element for a block that doesn't exist */
 
+.content-block p {} /* HTML Tag not to be used unless without a class or inside a context. */
 p.paragraph-block {} /* HTML Tag not to be used unless without a class or inside a context. */
 
 p .paragraph-block {} /* HTML Tag not to be used unless without a class or inside a context. */
@@ -33,10 +38,10 @@ p {}
 
 .context\* p {}
 
-p.context\* {}
+p.context\* {} /* HTML Tag may not be used in combination with classes unless inside a context */
 
 @media screen {
-  p.content\* { /* not allowed */
+  p.content\*, p { /* not allowed */
 
   }
 
@@ -53,6 +58,5 @@ html input[type=text] {}
 tbody th tr {}
 
 .context\* .block__elem {}
-
 .context\* .block__elem p {}
 .context\* .block--modifier {}

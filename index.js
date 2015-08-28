@@ -159,10 +159,11 @@ var bemcStepIsContext = function(step) {
 }
 
 
-var validate = function(bemc, manifest) {
+var validate = function(bemc, manifest, activeRules) {
 
   // HTML Tag Rule
-  _.forOwn(rules, function(rule, key) {
+  activeRules.forEach(function(key) {
+    var rule = rules[key]
     try {
       rule(bemc, manifest);
     } catch (error) {
@@ -202,11 +203,23 @@ var walkTree = function(css, lintNodes) {
 
 var BEMCLinter = postcss(function(css, opts) {
   var lintNodes = [];
+  var activeRules = Object.keys(rules)
+  
+  if (opts.rules) {
+    Object.keys(opts.rules).forEach(function(key) {
+      var active = opts.rules[key]
+      if (!active) {
+        var ruleIx = activeRules.indexOf(key)
+        activeRules.splice(ruleIx, 1)
+      }
+    })
+  }
+
   walkTree(css, lintNodes);
 
   var bemcSelectors = _.flatten(lintNodes.map(bemcify), true);
 
-  manifest = {};
+  var manifest = {};
 
   ["block", "context", "modifier"].forEach(function(type) {
     var ofType = _.uniq(_.flatten(bemcSelectors.map(function(bemcSelector) {
@@ -223,7 +236,7 @@ var BEMCLinter = postcss(function(css, opts) {
   });
 
   bemcSelectors.forEach(function(bemcSelector) {
-    validate(bemcSelector, manifest);
+    validate(bemcSelector, manifest, activeRules);
   });
 });
 
