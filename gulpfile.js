@@ -1,13 +1,12 @@
-var gulp = require("gulp");
-var postcss = require("gulp-postcss");
-
+var gulp = require("gulp")
+var postcss = require("gulp-postcss")
+var BEMCLinter = require("./index.js")
 
 gulp.task("default", function() {
   var processors = [
-    require("./index.js")
-  ];
+    BEMCLinter
+  ]
 
   return gulp.src("./test.css")
-    .pipe(postcss(processors));
-});
-
+    .pipe(postcss(processors))
+})

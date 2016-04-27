@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased Changes
 
+## 0.1.0 - 2016-04-27
+### Fixed
+- Updated to work with postcss 5.x.x
+### Added
+- Documentation for `bemc: on/off` added plus note on their use nested rules, tl;dr you can't reliably do it since less moves the comments.
+
 ## 0.0.5 - 2014-12-03
 ### Fixed
 - Null check added for blank atrules.

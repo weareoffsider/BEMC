@@ -65,7 +65,7 @@ var identifyClass = function(className) {
         encapsulates: className.split("has-")[1]
       };
       break;
-            
+
     case "context":
       return {
         type: type,
@@ -180,8 +180,8 @@ var validate = function(bemc, manifest, activeRules) {
 var bemcOn = true;
 
 var walkTree = function(css, lintNodes) {
-  if (!css.childs) return;
-  css.childs.forEach(function (cssChild) {
+  if (!css.nodes) return;
+  css.nodes.forEach(function (cssChild) {
     if (isRule(cssChild) && bemcOn) {
       lintNodes.push(cssChild);
     };
@@ -201,10 +201,12 @@ var walkTree = function(css, lintNodes) {
 }
 
 
-var BEMCLinter = postcss(function(css, opts) {
-  var lintNodes = [];
+var BEMCLinter = postcss.plugin('BEMCLinter', function BEMCLinter (opts) {
+  opts = opts || []
+
+  var lintNodes = []
   var activeRules = Object.keys(rules)
-  
+
   if (opts.rules) {
     Object.keys(opts.rules).forEach(function(key) {
       var active = opts.rules[key]
@@ -215,29 +217,31 @@ var BEMCLinter = postcss(function(css, opts) {
     })
   }
 
-  walkTree(css, lintNodes);
+  return function (css) {
+    walkTree(css, lintNodes);
 
-  var bemcSelectors = _.flatten(lintNodes.map(bemcify), true);
+    var bemcSelectors = _.flatten(lintNodes.map(bemcify), true);
 
-  var manifest = {};
+    var manifest = {};
 
-  ["block", "context", "modifier"].forEach(function(type) {
-    var ofType = _.uniq(_.flatten(bemcSelectors.map(function(bemcSelector) {
-      return bemcSelector.steps.map(function(bemcStep) {
-        return bemcStep.bemc.filter(function(bemc) {
-          return bemc.type == type;
-        }).map(function(bemc) {
-          return bemc.full;
+    ["block", "context", "modifier"].forEach(function(type) {
+      var ofType = _.uniq(_.flatten(bemcSelectors.map(function(bemcSelector) {
+        return bemcSelector.steps.map(function(bemcStep) {
+          return bemcStep.bemc.filter(function(bemc) {
+            return bemc.type == type;
+          }).map(function(bemc) {
+            return bemc.full;
+          });
         });
-      });
-    })));
+      })));
 
-    manifest[type + "s"] = ofType
-  });
+      manifest[type + "s"] = ofType
+    });
 
-  bemcSelectors.forEach(function(bemcSelector) {
-    validate(bemcSelector, manifest, activeRules);
-  });
+    bemcSelectors.forEach(function(bemcSelector) {
+      validate(bemcSelector, manifest, activeRules);
+    });
+  }
 });
 
 module.exports = BEMCLinter;
